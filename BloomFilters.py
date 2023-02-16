@@ -45,3 +45,19 @@ class BloomFilter:
       i=i+1
     return found
     
+def calculaFp(filtro,datos,datosPrueba):
+  fp=0
+  for dato in datosPrueba:
+    if filtro.contains(dato) and dato not in datos:
+      fp+=1.0
+  return fp/len(datosPrueba)
+
+
+fpr={}
+for m in [2**i for i in range(5,15)] :
+  fpr[m]=[]
+  for k in range(1,maxK):
+    filtro=BloomFilter(m,k)
+    for dato in datos:
+      filtro.inserta(dato)
+    fpr[m]+=[calculaFp(filtro,datos,datosPrueba)]
